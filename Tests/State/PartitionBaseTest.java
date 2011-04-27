@@ -70,6 +70,8 @@ public class PartitionBaseTest {
     @Test
     public void initialNormalizeSanityCheck() {
         Partition normPart = _rootPart.normalizePosition();
+        int bcount = 0;
+        int wcount = 0;
         for (int i = 0; i <= 99; i++) {
             NodeState iState = normPart.getNodeState(i);
             switch (i) {
@@ -77,17 +79,23 @@ public class PartitionBaseTest {
                 case 06:
                 case 30:
                 case 39:
-                    assertEquals(NodeState.BLACK, iState);
-                    break;
                 case 60:
                 case 69:
                 case 93:
                 case 96:
-                    assertEquals(NodeState.WHITE, iState);
+                    assertTrue(iState == NodeState.WHITE || iState == NodeState.BLACK);
+                    if (iState == NodeState.WHITE) {
+                        wcount++;
+                    }
+                    if (iState == NodeState.BLACK) {
+                        bcount++;
+                    }
                     break;
                 default:
                     assertEquals(NodeState.EMPTY, iState);
             }
         }
+        assertEquals(4, bcount);
+        assertEquals(4, wcount);
     }
 }
