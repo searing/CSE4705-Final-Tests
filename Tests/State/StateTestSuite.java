@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
  * @author Ethan Levine
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({NodeTest.class, NodeSetTest.class})
+@Suite.SuiteClasses({NodeTest.class, NodeSetTest.class, PartitionBaseTest.class})
 public class StateTestSuite {
 
     @BeforeClass
