@@ -38,8 +38,8 @@ public class GenericSearchAITest {
     @Before
     public void setUp() {
         Evaluator eval = new Heuristic();
-        _ai1 = new GenericSearchAI(false, eval, 2, 5);
-        _ai2 = new GenericSearchAI(false, eval, 15);
+        _ai1 = new GenericSearchAI(false, eval, 2, 5, false);
+        _ai2 = new GenericSearchAI(false, eval, 15, true);
     }
     
     @After
@@ -53,6 +53,6 @@ public class GenericSearchAITest {
     
     @Test
     public void terminationTest() {
-        _ai1.getInterface().getMove(10);
+        _ai1.getInterface().getMove(2);
     }
 }
