@@ -13,6 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import CSE4705_final.State.*;
+import CSE4705_final.Client.*;
 
 import java.util.*;
 
@@ -112,7 +113,7 @@ public class PartitionBaseTest {
     @Test
     public void initialReachableStates() {
         // Reachable states from 0,0.
-        int[] correctStates00 = {00,01,02,10,20,11,22,33,44,55,66,77,88,99};
+        int[] correctStates00 = {01,02,10,20,11,22,33,44,55,66,77,88,99};
         assertTrue(_rootPart.getReachableIndicies(00).containsAll(fromArray(correctStates00)));
         assertTrue(fromArray(correctStates00).containsAll(_rootPart.getReachableIndicies(00)));
     }
@@ -148,5 +149,47 @@ public class PartitionBaseTest {
         }
         runPartList = runPart.forkNode(59, NodeState.BLOCKED);
         assertEquals(2, runPartList.size());
+    }
+    
+    @Test
+    public void oddSplittingBug() {
+        List<Partition> _lp1 = _rootPart.forkNode(1, NodeState.BLOCKED);
+        Partition _p1 = _lp1.get(0);
+        List<Partition> _lp2 = _p1.forkNode(2, NodeState.BLOCKED);
+        Partition _p2 = _lp2.get(0);
+        List<Partition> _lp3 = _p2.forkNode(24, NodeState.BLOCKED);
+        Partition _p3 = _lp3.get(0);
+        List<Partition> _lp4 = _p3.forkMove(new ClientMove(3,0,2,1,1,1),true);
+        Partition _p4 = _lp4.get(0);
+        List<Partition> _lp5 = _p4.forkNode(20, NodeState.BLOCKED);
+        Partition _p5 = _lp5.get(0);
+        List<Partition> _lp6 = _p5.forkNode(30, NodeState.BLOCKED);
+        Partition _p6 = _lp6.get(0);
+        List<Partition> _lp7 = _p6.forkNode(31, NodeState.BLOCKED);
+        Partition _p7 = _lp7.get(0);
+        List<Partition> _lp8 = _p7.forkNode(22, NodeState.BLOCKED);
+        Partition _p8 = _lp8.get(0);
+        List<Partition> _lp9 = _p8.forkNode(32, NodeState.BLOCKED);
+        Partition _p9 = _lp9.get(0);
+        List<Partition> _lp10 = _p9.forkNode(3, NodeState.BLOCKED);
+        Partition _p10 = _lp10.get(0);
+        List<Partition> _lp11 = _p10.forkNode(13, NodeState.BLOCKED);
+        Partition _p11 = _lp11.get(0);
+        List<Partition> _lp12 = _p11.forkNode(23, NodeState.BLOCKED);
+        Partition _p12 = _lp12.get(0);
+        assertEquals(1, _lp1.size());
+        assertEquals(1, _lp2.size());
+        assertEquals(1, _lp3.size());
+        assertEquals(1, _lp4.size());
+        assertEquals(1, _lp5.size());
+        assertEquals(1, _lp6.size());
+        assertEquals(1, _lp7.size());
+        assertEquals(1, _lp8.size());
+        assertEquals(1, _lp9.size());
+        assertEquals(1, _lp10.size());
+        assertEquals(1, _lp11.size());
+        assertEquals(2, _lp12.size());
+        assertEquals(2, _p12.getReachableIndicies(21).size());
+        assertEquals(3, _p12.getFreeStates());
     }
 }
